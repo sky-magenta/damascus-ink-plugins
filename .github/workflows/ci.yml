@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Marketplace manifest is valid JSON
+        run: |
+          python - <<'PY'
+          import json
+          m = json.load(open(".claude-plugin/marketplace.json", encoding="utf-8"))
+          assert m["name"] == "damascus-ink", m["name"]
+          names = [p["name"] for p in m["plugins"]]
+          assert names == sorted(set(names)) or len(names) == len(set(names)), "duplicate plugin names"
+          for p in m["plugins"]:
+              assert p["source"]["source"] == "github" and "/" in p["source"]["repo"], p
+              print("ok:", p["name"], "->", p["source"]["repo"])
+          print("marketplace.json OK:", len(m["plugins"]), "plugins")
+          PY
