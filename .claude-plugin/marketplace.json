@@ -15,7 +15,7 @@
         "source": "url",
         "url": "https://github.com/sky-magenta/pravo-grammatika.git",
         "ref": "main",
-        "sha": "fe8a542bb1c92b759a9ca6d7bbb5dd574a055cd5"
+        "sha": "33699979f212e4b4efa011df4483e7d0920ead02"
       },
       "description": "«Скилл грамматики для юриста»: форма выражения юридического текста — синтаксическая неоднозначность, пунктуация, область действия «и/или» и «в том числе», границы сроков, анафора, деонтическая модальность. Показывает оба прочтения, выбор оставляет автору.",
       "homepage": "https://sky-magenta.github.io/pravo-grammatika/",
@@ -28,7 +28,7 @@
         "source": "url",
         "url": "https://github.com/sky-magenta/pravo-logika.git",
         "ref": "main",
-        "sha": "1d1731a7b0a37ada719a90d1b4caeeca78e00666"
+        "sha": "5d7105d10d57b85b303f3ac16d333b91ee7074c3"
       },
       "description": "«Скилл логики для юриста»: форма правового рассуждения — субсумпция, толкование, однозначность договора, разбор нормы, сравнение двух позиций. Право по существу не проверяет.",
       "homepage": "https://sky-magenta.github.io/pravo-logika/",
@@ -41,7 +41,7 @@
         "source": "url",
         "url": "https://github.com/sky-magenta/pravo-ritorika.git",
         "ref": "main",
-        "sha": "ccc5d487476bde0a62d125e2a1e7997bd91989a9"
+        "sha": "2e5bcc8889ad44f702237aa8bbd735bc6300e114"
       },
       "description": "«Скилл риторики для юриста»: убедительность письменной правовой позиции — выбор линии спора, порядок аргументов, адаптация под адресата, стресс-тест глазами оппонента. Только честная аргументация.",
       "homepage": "https://sky-magenta.github.io/pravo-ritorika/",
