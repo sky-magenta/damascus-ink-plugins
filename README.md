@@ -1,6 +1,6 @@
 # Damascus Ink — маркетплейс юридических скиллов
 
-![Ясность — три скилла для юриста: грамматика, логика, риторика](assets/trivium-banner.png)
+![Ясность — три скилла для юриста: грамматика, логика, риторика](docs/trivium-banner.png)
 
 🔗 **Страница проекта: [sky-magenta.github.io/damascus-ink-plugins](https://sky-magenta.github.io/damascus-ink-plugins/)** — что это и как поставить, на одной странице.
 
