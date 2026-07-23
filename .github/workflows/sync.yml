@@ -1,6 +1,6 @@
 name: sync-plugins
 
-# Автообновление встроенных копий скиллов из их репозиториев:
+# Автообновление закреплённых коммитов скиллов (sha в marketplace.json):
 # по расписанию (каждые 6 часов) и вручную кнопкой Run workflow.
 on:
   schedule:
@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Sync vendored plugins from skill repos
+      - name: Update pinned plugin shas from skill repos
         run: python scripts/sync_plugins.py
 
       - name: Commit and push if changed
@@ -29,7 +29,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add -A
-            git commit -m "Sync vendored plugins from skill repos"
+            git commit -m "Update pinned plugin shas from skill repos"
             git push
           else
             echo "already up to date"

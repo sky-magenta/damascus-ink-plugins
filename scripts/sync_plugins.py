@@ -1,52 +1,44 @@
 # -*- coding: utf-8 -*-
-"""Синхронизация встроенных копий скиллов из их репозиториев.
+"""Обновление закреплённых коммитов (sha) плагинов в marketplace.json.
 
 Запуск (из корня умбреллы):  python scripts/sync_plugins.py
-Клонирует каждый скилл-репозиторий (main, по https), копирует файлы плагина
-в plugins/<имя>/ и записывает зафиксированный коммит в plugins/<имя>/.vendored-sha.
-После запуска закоммитьте изменения — это и есть релиз новой версии скилла
-в маркетплейсе.
+Для каждого плагина спрашивает у GitHub текущий HEAD ветки main
+(git ls-remote — без клонирования) и, если репозиторий скилла ушёл вперёд,
+обновляет поле source.sha. После запуска закоммитьте изменения — это и есть
+релиз новой версии скилла в маркетплейсе. Автоматически то же самое делает
+workflow .github/workflows/sync.yml (каждые 6 часов и по кнопке).
 """
-import json, os, shutil, subprocess, sys, tempfile
+import json, os, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-REPOS = {
-    "pravo-grammatika": "https://github.com/sky-magenta/pravo-grammatika.git",
-    "pravo-logika": "https://github.com/sky-magenta/pravo-logika.git",
-    "pravo-ritorika": "https://github.com/sky-magenta/pravo-ritorika.git",
-}
-# что входит в плагин (остальное — сайт/CI/тесты, плагину не нужны)
-KEEP = ["SKILL.md", "references", "commands", ".claude-plugin",
-        "LICENSE", "THIRD_PARTY_NOTICES.md", "README.md"]
+MANIFEST = os.path.join(ROOT, ".claude-plugin", "marketplace.json")
 
-def run(*cmd, cwd=None):
-    r = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
-    if r.returncode != 0:
-        sys.exit(f"FAIL {' '.join(cmd)}: {r.stderr.strip()}")
-    return r.stdout.strip()
+def head_of(url: str) -> str:
+    r = subprocess.run(["git", "ls-remote", url, "refs/heads/main"],
+                       capture_output=True, text=True)
+    if r.returncode != 0 or not r.stdout.strip():
+        sys.exit(f"FAIL ls-remote {url}: {r.stderr.strip()}")
+    return r.stdout.split()[0]
 
 def main():
-    plugdir = os.path.join(ROOT, "plugins")
-    os.makedirs(plugdir, exist_ok=True)
-    with tempfile.TemporaryDirectory() as tmp:
-        for name, url in REPOS.items():
-            src = os.path.join(tmp, name)
-            run("git", "clone", "-q", "--depth", "1", url, src)
-            sha = run("git", "rev-parse", "HEAD", cwd=src)
-            dst = os.path.join(plugdir, name)
-            if os.path.isdir(dst):
-                shutil.rmtree(dst)
-            os.makedirs(dst)
-            for item in KEEP:
-                s = os.path.join(src, item)
-                if not os.path.exists(s):
-                    continue
-                d = os.path.join(dst, item)
-                (shutil.copytree if os.path.isdir(s) else shutil.copyfile)(s, d)
-            with open(os.path.join(dst, ".vendored-sha"), "w", encoding="utf-8") as f:
-                f.write(sha + "\n")
-            print(f"  {name}: {sha[:10]}")
-    print("sync done — review `git status`, then commit")
+    m = json.load(open(MANIFEST, encoding="utf-8"))
+    changed = False
+    for pl in m["plugins"]:
+        src = pl["source"]
+        new = head_of(src["url"])
+        old = src.get("sha", "")
+        if new != old:
+            src["sha"] = new
+            changed = True
+            print(f"  {pl['name']}: {old[:10] or '(none)'} -> {new[:10]}")
+        else:
+            print(f"  {pl['name']}: up to date ({new[:10]})")
+    if changed:
+        with open(MANIFEST, "w", encoding="utf-8", newline="\n") as f:
+            f.write(json.dumps(m, ensure_ascii=False, indent=2) + "\n")
+        print("pins updated — review `git status`, then commit")
+    else:
+        print("all pins up to date")
 
 if __name__ == "__main__":
     main()

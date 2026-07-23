@@ -20,9 +20,9 @@ jobs:
           names = [p["name"] for p in m["plugins"]]
           assert names == sorted(set(names)) or len(names) == len(set(names)), "duplicate plugin names"
           for p in m["plugins"]:
-              assert isinstance(p["source"], str) and p["source"] == "./plugins/" + p["name"], p
-              pj = json.load(open(p["source"].lstrip("./") + "/.claude-plugin/plugin.json", encoding="utf-8"))
-              assert pj["name"] == p["name"], (pj["name"], p["name"])
-              print("ok:", p["name"], "->", p["source"])
+              s = p["source"]
+              assert s["source"] == "url" and s["url"] == f"https://github.com/sky-magenta/{p['name']}.git", p
+              assert len(s.get("sha", "")) == 40, ("sha missing/bad", p["name"])
+              print("ok:", p["name"], "->", s["sha"][:10])
           print("marketplace.json OK:", len(m["plugins"]), "plugins")
           PY

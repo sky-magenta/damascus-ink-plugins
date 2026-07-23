@@ -10,19 +10,31 @@
     {
       "name": "pravo-grammatika",
       "description": "«Скилл грамматики для юриста»: форма выражения юридического текста — синтаксическая неоднозначность, пунктуация, область действия «и/или» и «в том числе», границы сроков, анафора, деонтическая модальность. Показывает оба прочтения, выбор оставляет автору.",
-      "source": "./plugins/pravo-grammatika",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/sky-magenta/pravo-grammatika.git",
+        "sha": "42c10dcd28159b15fd7827b387e865ac2a8a6594"
+      },
       "homepage": "https://sky-magenta.github.io/pravo-grammatika/"
     },
     {
       "name": "pravo-logika",
       "description": "«Скилл логики для юриста»: форма правового рассуждения — субсумпция, толкование, однозначность договора, разбор нормы, сравнение двух позиций. Право по существу не проверяет.",
-      "source": "./plugins/pravo-logika",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/sky-magenta/pravo-logika.git",
+        "sha": "e48c8847e011360115e3308df1254be5b114e4ce"
+      },
       "homepage": "https://sky-magenta.github.io/pravo-logika/"
     },
     {
       "name": "pravo-ritorika",
       "description": "«Скилл риторики для юриста»: убедительность письменной правовой позиции — выбор линии спора, порядок аргументов, адаптация под адресата, стресс-тест глазами оппонента. Только честная аргументация.",
-      "source": "./plugins/pravo-ritorika",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/sky-magenta/pravo-ritorika.git",
+        "sha": "88930c94bb4a441332637d48fab37caaa577294b"
+      },
       "homepage": "https://sky-magenta.github.io/pravo-ritorika/"
     }
   ]
