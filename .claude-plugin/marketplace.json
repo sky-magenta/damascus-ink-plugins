@@ -13,7 +13,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/sky-magenta/pravo-grammatika.git",
-        "sha": "6ae17516b2babf6c5638182f7ee42c3569a978f9"
+        "sha": "df3d3784bef203d375ae0f90b0cc29cac76b471e"
       },
       "homepage": "https://sky-magenta.github.io/pravo-grammatika/"
     },
@@ -23,7 +23,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/sky-magenta/pravo-logika.git",
-        "sha": "77063fdb5dcb4dffbf0b68d65a35c7ad0cd9d365"
+        "sha": "cc895436fbe73922d008529a6f1ab99b2148ba40"
       },
       "homepage": "https://sky-magenta.github.io/pravo-logika/"
     },
