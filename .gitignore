@@ -6,6 +6,8 @@ desktop.ini
 *~
 *.bak
 *.tmp
+__pycache__/
+*.py[cod]
 
 # ── Editor / IDE ─────────────────────────────────────────────────────
 .vscode/

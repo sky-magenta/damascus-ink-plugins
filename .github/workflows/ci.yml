@@ -5,24 +5,22 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
 
-      - name: Marketplace manifest is valid JSON
-        run: |
-          python - <<'PY'
-          import json
-          m = json.load(open(".claude-plugin/marketplace.json", encoding="utf-8"))
-          assert m["name"] == "damascus-ink", m["name"]
-          names = [p["name"] for p in m["plugins"]]
-          assert names == sorted(set(names)) or len(names) == len(set(names)), "duplicate plugin names"
-          for p in m["plugins"]:
-              s = p["source"]
-              assert s["source"] == "url" and s["url"] == f"https://github.com/sky-magenta/{p['name']}.git", p
-              assert len(s.get("sha", "")) == 40, ("sha missing/bad", p["name"])
-              print("ok:", p["name"], "->", s["sha"][:10])
-          print("marketplace.json OK:", len(m["plugins"]), "plugins")
-          PY
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate marketplace and documentation
+        run: python -m scripts.validate_marketplace --check-docs
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
